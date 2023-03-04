@@ -18,6 +18,8 @@ import java.util.Properties;
 
 public class SchemaRegistry {
 
+
+    // 21:44-21.47-
     public static void main(String[] args) throws IOException {
         URL url = new URL("http://localhost:8081/subjects/test/versions/1");
 

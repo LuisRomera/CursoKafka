@@ -6,5 +6,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>KafkaSender</module>
+        <module>KafkaStreamsApp</module>
     </modules>
 </project>
