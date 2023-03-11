@@ -20,7 +20,7 @@ public class EjercicioA {
 
         Producer<String, String> producer = new KafkaProducer<>(properties);
 
-        producer.send(new ProducerRecord<>("practice.in", "keyH", "value"));
+        producer.send(new ProducerRecord<>("practice.in", 0,"keyH", "ya mismo acabamos"));
         producer.flush();
     }
 }
