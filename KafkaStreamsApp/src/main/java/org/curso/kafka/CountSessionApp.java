@@ -24,7 +24,7 @@ public class CountSessionApp {
 
         final KStream<Long, String> stream = builder.stream(TOPIC_SESSION_IN);
 
-        Duration inactivityGap = Duration.ofMinutes(1);
+
         KTable<Windowed<Long>, Long> countWindow = stream.groupByKey()
                 .windowedBy(SessionWindows.with(Duration.ofMinutes(1)))
                 .count();

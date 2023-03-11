@@ -51,7 +51,7 @@ public class ThreadConsumer extends Thread {
                             event.offset(),
                             event.key(),
                             event.value());
-                    consumer.commitAsync();
+                    consumer.commitSync();
                 }
             }
         } catch (Exception we) {

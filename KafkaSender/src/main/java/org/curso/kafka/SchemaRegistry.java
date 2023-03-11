@@ -21,7 +21,7 @@ public class SchemaRegistry {
 
     // 21:44-21.47-
     public static void main(String[] args) throws IOException {
-        URL url = new URL("http://localhost:8081/subjects/test/versions/1");
+        URL url = new URL("http://localhost:8081/subjects/person/versions/1");
 
         Gson gson = new Gson();
         gson.fromJson(stream(url).toString(), Map.class);
@@ -31,8 +31,9 @@ public class SchemaRegistry {
         Schema.Parser parser = new Schema.Parser();
         Schema schema = parser.parse(map.get("schema").toString());
         GenericRecord genericRecord = new GenericData.Record(schema);
-        genericRecord.put("userID", "1");
-        genericRecord.put("customerName", "Luis");
+        genericRecord.put("firstName", "Luis");
+        genericRecord.put("lastName", "Romera");
+        genericRecord.put("birthDate", 1111111L);
 
 
         Properties properties = new Properties();

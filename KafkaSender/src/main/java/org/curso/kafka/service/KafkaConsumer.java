@@ -16,7 +16,6 @@ public class KafkaConsumer {
     private org.apache.kafka.clients.consumer.KafkaConsumer<String, String> consumer;
 
     public KafkaConsumer(Properties properties, String groupId, String bootstrapServers, String topic) {
-        properties = new Properties();
         properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());

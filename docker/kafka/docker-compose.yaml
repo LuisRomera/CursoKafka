@@ -7,7 +7,6 @@ services:
     container_name: zookeeper
     mem_limit: 512m
     mem_reservation: 128M
-    cpus: 0.25
     ports:
       - "2181:2181"
     environment:
@@ -19,7 +18,6 @@ services:
     hostname: broker
     mem_limit: 512m
     mem_reservation: 128M
-    cpus: 0.25
     container_name: broker
     depends_on:
       - zookeeper
@@ -44,7 +42,6 @@ services:
     hostname: schema-registry
     mem_limit: 512m
     mem_reservation: 128M
-    cpus: 0.25
     container_name: confluent-schema-registry
     depends_on:
       - broker
@@ -61,7 +58,6 @@ services:
     container_name: confluent-registry-ui
     mem_limit: 128m
     mem_reservation: 128M
-    cpus: 0.25
     depends_on:
       - broker
       - schema-registry

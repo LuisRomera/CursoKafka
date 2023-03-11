@@ -15,7 +15,6 @@ public class IdempotentConsumer {
     public static void main(String[] args) {
 
         // Consumer properties
-
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:9092");
         props.put("group.id", "temp-event-group");
