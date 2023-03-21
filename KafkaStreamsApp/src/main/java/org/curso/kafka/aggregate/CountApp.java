@@ -1,4 +1,4 @@
-package org.curso.kafka;
+package org.curso.kafka.aggregate;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
@@ -35,11 +35,23 @@ public class CountApp {
 
         // count words
         KStream<String, String> selectKeyStream = flatMapValuesStream.selectKey((k, v) -> v);
-        selectKeyStream.foreach((k, v) -> System.out.println("->" + k + " - " + v ));
+        //selectKeyStream.foreach((k, v) -> System.out.println("->" + k + " - " + v ));
+
 
         KTable<String, Long> groupStream = selectKeyStream.groupByKey(Grouped.with(Serdes.String(), Serdes.String())).count();
 
         groupStream.toStream().foreach((k, v) -> System.out.println(k + " - " + v ));
+
+
+        KGroupedTable<String, Long> groupedTable = groupStream.groupBy(
+                (key, value) -> KeyValue.pair(key, value),
+                Grouped.with(Serdes.String(), Serdes.Long()));
+
+        KTable<String, Long> table = groupedTable.reduce(
+                (aggValue, newValue) -> aggValue + newValue,
+                (aggValue, oldValue) -> aggValue - oldValue);
+
+        table.toStream().foreach((k, v) -> System.out.println(k + " - " + v ));
 
 
         Topology topology = builder.build();

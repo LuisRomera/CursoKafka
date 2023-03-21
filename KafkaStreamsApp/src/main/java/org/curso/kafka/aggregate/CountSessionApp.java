@@ -1,4 +1,4 @@
-package org.curso.kafka;
+package org.curso.kafka.aggregate;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.common.utils.Bytes;
@@ -29,6 +29,8 @@ public class CountSessionApp {
                 .windowedBy(SessionWindows.with(Duration.ofMinutes(1)))
                 .count();
         countWindow.toStream().foreach((k,v) -> System.out.println(k + " - " + v));
+
+
 
 //        KStream<Long, List<String>> splitStream = stream.mapValues(line -> Arrays.asList(line.split("\\s+")));
 //

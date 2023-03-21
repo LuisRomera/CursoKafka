@@ -1,5 +1,6 @@
-package org.curso.kafka;
+package org.curso.kafka.aggregate;
 
+import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.StreamsBuilder;
