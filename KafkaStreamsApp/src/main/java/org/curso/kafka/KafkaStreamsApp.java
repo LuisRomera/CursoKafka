@@ -18,13 +18,21 @@ import static org.curso.kafka.utils.KafkaStreamProperties.getKafkaStreamProperti
 public class KafkaStreamsApp {
     public static void main(String[] args) {
 
-        Properties config = getKafkaStreamProperties("KafkaStreamsApp");
 
+        Topology topology = createTopology();
+
+        KafkaStreams kafkaStreams = new KafkaStreams(topology, getKafkaStreamProperties("KafkaStreamsApp"));
+        kafkaStreams.start();
+        Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
+
+    }
+
+    public static Topology createTopology() {
         final StreamsBuilder builder = new StreamsBuilder();
-        final KStream<String, String> stream = builder.stream("practica");
-        KStream<String, JSONObject> jsonStream = stream.map((k, v) -> new KeyValue<>(k, new JSONObject(v)));
+        final KStream<Long, String> stream = builder.stream("practica");
+        KStream<Long, JSONObject> jsonStream = stream.map((k, v) -> new KeyValue<>(k, new JSONObject(v)));
 
-        KStream<String, JSONObject> filterStream = jsonStream
+        KStream<Long, JSONObject> filterStream = jsonStream
                 .filter((k, v) -> v.getInt("Year") < 2023);
 
         KTable<String, Long> kTable = filterStream
@@ -37,11 +45,8 @@ public class KafkaStreamsApp {
                 .map((k, v) -> new KeyValue<>(v.getString("Variable_code"), v.toString()))
                 .to("practica-out");
 
-        Topology topology = builder.build();
-
-        KafkaStreams kafkaStreams = new KafkaStreams(topology, config);
-        kafkaStreams.start();
-        Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
-
+        return builder.build();
     }
+
+
 }

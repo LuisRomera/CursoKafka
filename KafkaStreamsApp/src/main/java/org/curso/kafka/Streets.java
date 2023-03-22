@@ -40,7 +40,7 @@ public class Streets {
         while (true) {
             int line = Math.toIntExact(Math.round(Math.random() * (list.length() - 1) + 1));
             JSONObject jsonObject = new JSONObject();
-            producer.send(new ProducerRecord<Long, String>(TOPIC_IN, Long.valueOf(String.valueOf(line)), list.get(line).toString()));
+            producer.send(new ProducerRecord<Long, String>("streets", Long.valueOf(String.valueOf(line)), list.get(line).toString()));
             System.out.println(jsonObject);
             try {
                 Thread.sleep(1000L);

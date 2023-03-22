@@ -36,7 +36,7 @@ public class Buses {
         while (true) {
             int line = Math.toIntExact(Math.round(Math.random() * (list.length() - 1) + 1));
             JSONObject jsonObject = new JSONObject();
-            producer.send(new ProducerRecord<Long, String>(TOPIC_IN, Long.valueOf(String.valueOf(line)), list.get(line).toString()));
+            producer.send(new ProducerRecord<Long, String>("topic.bus",  Integer.valueOf(String.valueOf(line))%3, Long.valueOf(String.valueOf(line)), list.get(line).toString()));
             System.out.println(list.get(line));
             try {
                 Thread.sleep(1000L);
