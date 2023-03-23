@@ -1,20 +1,21 @@
-package org.curso.kafka.aggregate;
+package org.curso.kafka;
 
 import org.apache.kafka.common.serialization.Serdes;
-import org.apache.kafka.streams.*;
-import org.apache.kafka.streams.kstream.*;
-import org.json.JSONObject;
+import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.Topology;
+import org.apache.kafka.streams.kstream.JoinWindows;
+import org.apache.kafka.streams.kstream.KStream;
 
 import java.time.Duration;
-import java.util.Date;
 import java.util.Properties;
 
-import static org.curso.kafka.utils.KafkaStreamProperties.*;
-import static org.curso.kafka.utils.StreamUtils.printStream;
+import static org.curso.kafka.utils.KafkaStreamProperties.getKafkaStreamProperties;
 
-public class TansformApp {
-
+public class ProcessorStreamApp {
     public static void main(String[] args) {
+
 
         Properties config = new Properties();
         config.put(StreamsConfig.APPLICATION_ID_CONFIG, "reduce");
@@ -25,31 +26,27 @@ public class TansformApp {
         config.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
 
 
-
-
         Topology topology = createTopology();
 
         KafkaStreams kafkaStreams = new KafkaStreams(topology, config);
+
         kafkaStreams.start();
         Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
 
     }
 
-
     public static Topology createTopology() {
-        final StreamsBuilder builder = new StreamsBuilder();
-        final KStream<String, String> stream = builder.stream("in");
+
+        Topology topology = new Topology();
+        topology.addSource("source", "in");
 
 
-        KStream<Object, Object> result = stream.transform(new CustomTransform());
 
-        result.foreach((k, v)-> System.out.println(k + " - " + v));
-
-
-//        kTable.toStream().to("out");
+        topology.addProcessor("countWords", new WordProcessor(), "source");
+        topology.addSink("sink", "out", Serdes.String().serializer(), Serdes.Long().serializer(), "countWords");
 
 
-        return builder.build();
+        return topology;
     }
 
 

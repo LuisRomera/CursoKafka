@@ -31,6 +31,9 @@ public class Aggregate {
                 Materialized.<Long, Long, KeyValueStore<Bytes, byte[]>>as("aggregated-stream-store")
                         .withValueSerde(Serdes.Long()));
 
+
+        aggregateTable.toStream().foreach((k,v) -> System.out.println(k + " - " + v));
+
         aggregateTable.toStream().to("out");
 
 

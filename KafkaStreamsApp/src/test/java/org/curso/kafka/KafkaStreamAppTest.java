@@ -30,18 +30,9 @@ public class KafkaStreamAppTest {
 
         KeyValueStore store = topologyTestDriver.getKeyValueStore("store-name");
 
-
-
-
-
         topologyTestDriver.createOutputTopic("out", Serdes.String().deserializer(),
                 Serdes.String().deserializer());
 
-
         topologyTestDriver.close();
-
     }
-
-
-
 }

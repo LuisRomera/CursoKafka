@@ -7,7 +7,6 @@ import org.apache.kafka.streams.processor.ProcessorContext;
 
 public class CustomTransform implements TransformerSupplier {
 
-
     @Override
     public Transformer get() {
         return new Transformer() {
@@ -17,13 +16,15 @@ public class CustomTransform implements TransformerSupplier {
             @Override
             public void init(ProcessorContext processorContext) {
                 this.processorContext = processorContext;
+
+
             }
 
             @Override
             public KeyValue<String, String> transform(Object k, Object value) {
-                String v = (String) value;
-                v.split(" ");
-                return null;
+                String id = processorContext.topic() + "_" +
+                        processorContext.offset() + "_" + processorContext.partition();
+                return new KeyValue<>(id, (String) value);
             }
 
             @Override
